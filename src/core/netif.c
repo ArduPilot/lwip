@@ -752,6 +752,23 @@ netif_set_addr(struct netif *netif, const ip4_addr_t *ipaddr, const ip4_addr_t *
   }
 #endif
 }
+
+#if ARP_PROXYARP_SUPPORT
+/**
+ * @ingroup netif_ip4
+ * set a proxyarp IP on an interface
+ *
+ * @param netif the network interface to change
+ * @param proxyarp_ip the new proxyarp address
+ */
+void
+netif_set_proxyarp(struct netif *netif, const ip4_addr_t *proxyarp_ip)
+{
+    netif->proxyarp_ip = *proxyarp_ip;
+    netif->flags |= NETIF_FLAG_PROXYARP;
+}
+#endif // ARP_PROXYARP_SUPPORT
+
 #endif /* LWIP_IPV4*/
 
 /**
