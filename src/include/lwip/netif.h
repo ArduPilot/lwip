@@ -106,6 +106,11 @@ extern "C" {
  * Set by the netif driver in its init function. */
 #define NETIF_FLAG_MLD6         0x40U
 
+/** If set then the proxyarp_ip in the netif has been set.
+ * set by netif_set_proxyarp()
+*/
+#define NETIF_FLAG_PROXYARP     0x80U
+
 /**
  * @}
  */
@@ -277,6 +282,9 @@ struct netif {
   ip_addr_t ip_addr;
   ip_addr_t netmask;
   ip_addr_t gw;
+#if ARP_PROXYARP_SUPPORT
+  ip_addr_t proxyarp_ip; // valid if NETIF_FLAG_PROXYARP set
+#endif
 #endif /* LWIP_IPV4 */
 #if LWIP_IPV6
   /** Array of IPv6 addresses for this netif. */
@@ -465,6 +473,12 @@ void netif_set_gw(struct netif *netif, const ip4_addr_t *gw);
 #define netif_ip_netmask4(netif) ((const ip_addr_t*)&((netif)->netmask))
 /** @ingroup netif_ip4 */
 #define netif_ip_gw4(netif)      ((const ip_addr_t*)&((netif)->gw))
+
+#if ARP_PROXYARP_SUPPORT
+// support for a single proxy ARP IP address
+void netif_set_proxyarp(struct netif *netif, const ip4_addr_t *proxyarp_ip);
+#define netif_ip4_proxyarp(netif) ((const ip_addr_t*)&((netif)->proxyarp_ip))
+#endif /* ARP_PROXYARP_SUPPORT */
 #endif /* LWIP_IPV4 */
 
 #define netif_set_flags(netif, set_flags)     do { (netif)->flags = (u8_t)((netif)->flags |  (set_flags)); } while(0)

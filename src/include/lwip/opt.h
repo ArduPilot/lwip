@@ -657,6 +657,15 @@
 #endif
 
 /**
+ * ARP_PROXYARP_SUPPORT: Enable proxy ARP functonality. This allows
+ * for netif_set_proxyarp() to add an additional IP4 address to a
+ * network interface which will be responded to for ARP queries
+ */
+#if !defined ARP_PROXYARP_SUPPORT || defined __DOXYGEN__
+#define ARP_PROXYARP_SUPPORT            0
+#endif
+
+/**
  * ETHARP_SUPPORT_VLAN==1: support receiving and sending ethernet packets with
  * VLAN header. See the description of LWIP_HOOK_VLAN_CHECK and
  * LWIP_HOOK_VLAN_SET hooks to check/set VLAN headers.
