@@ -694,6 +694,15 @@ etharp_input(struct pbuf *p, struct netif *netif)
     from_us = (u8_t)ip4_addr_eq(&sipaddr, netif_ip4_addr(netif));
   }
 
+#if ARP_PROXYARP_SUPPORT
+  if (netif->flags & NETIF_FLAG_PROXYARP) {
+    /*
+      allow answering ARP queries for a configured proxy arp address
+    */
+    for_us |= (u8_t)ip4_addr_eq(&dipaddr, netif_ip4_proxyarp(netif));
+  }
+#endif
+
   /* ARP message directed to us?
       -> add IP address in ARP cache; assume requester wants to talk to us,
          can result in directly sending the queued packets for this host.
@@ -716,7 +725,7 @@ etharp_input(struct pbuf *p, struct netif *netif)
         /* send ARP response */
         etharp_raw(netif,
                    (struct eth_addr *)netif->hwaddr, &hdr->shwaddr,
-                   (struct eth_addr *)netif->hwaddr, netif_ip4_addr(netif),
+                   (struct eth_addr *)netif->hwaddr, &dipaddr,
                    &hdr->shwaddr, &sipaddr,
                    ARP_REPLY);
         /* we are not configured? */
