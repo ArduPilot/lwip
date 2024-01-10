@@ -573,6 +573,10 @@ pppos_input(ppp_pcb *ppp, const void *s, int l)
 #if PPP_IPV4_SUPPORT
            || pppos->in_protocol == PPP_IP
 #endif /* PPP_IPV4_SUPPORT */
+#if VJ_SUPPORT
+           || pppos->in_protocol == PPP_VJC_COMP
+           || pppos->in_protocol == PPP_VJC_UNCOMP
+#endif
 #if PPP_IPV6_SUPPORT
            || pppos->in_protocol == PPP_IPV6
 #endif /* PPP_IPV6_SUPPORT */
@@ -699,6 +703,10 @@ pppos_input(ppp_pcb *ppp, const void *s, int l)
 #if PPP_IPV4_SUPPORT
              || pppos->in_protocol == PPP_IP
 #endif /* PPP_IPV4_SUPPORT */
+#if VJ_SUPPORT
+             || pppos->in_protocol == PPP_VJC_COMP
+             || pppos->in_protocol == PPP_VJC_UNCOMP
+#endif
 #if PPP_IPV6_SUPPORT
              || pppos->in_protocol == PPP_IPV6
 #endif /* PPP_IPV6_SUPPORT */
