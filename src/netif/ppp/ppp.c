@@ -784,6 +784,10 @@ void ppp_input(ppp_pcb *pcb, struct pbuf *pb) {
   LWIP_ASSERT("pcb->phase >= PPP_PHASE_ESTABLISH && pcb->phase <= PPP_PHASE_TERMINATE",
     pcb->phase >= PPP_PHASE_ESTABLISH && pcb->phase <= PPP_PHASE_TERMINATE);
 
+#ifdef LWIP_PPP_CAPTURE_HOOK
+  LWIP_PPP_CAPTURE_HOOK(pcb, pb);
+#endif
+
   magic_randomize();
 
   if (pb->len < 2) {
